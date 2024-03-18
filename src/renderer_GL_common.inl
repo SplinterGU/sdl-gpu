@@ -1191,7 +1191,7 @@ static void changeCamera(GPU_Target* target)
 
 static void get_camera_matrix(GPU_Target* target, float* result)
 {
-	float offsetX, offsetY;
+	float offsetX = 0.0, offsetY = 0.0;
 
     GPU_MatrixIdentity(result);
 
@@ -3370,7 +3370,7 @@ static GPU_Image* gpu_copy_image_pixels_only(GPU_Renderer* renderer, GPU_Image* 
                     GPU_UnsetImageVirtualResolution(image);
                 }
 
-				renderer->impl->Blit(renderer, image, NULL, target, (float)(image->w / 2), (float)(image->h / 2));
+				renderer->impl->Blit(renderer, image, NULL, target, (float)(image->w / 2.0f), (float)(image->h / 2.0f));
 
 				// Restore the saved settings
 				GPU_SetColor(image, color);
