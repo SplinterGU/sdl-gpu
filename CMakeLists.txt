@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 project(SDL_gpu)
 
@@ -71,6 +71,11 @@ elseif(ANDROID)
   set(DEFAULT_DISABLE_GLES OFF)
   set(DEFAULT_BUILD_SHARED ON)
   set(DEFAULT_BUILD_STATIC OFF)
+  add_definitions(-DGL_GLEXT_PROTOTYPES)
+  add_definitions(-DADD_MISSING_OES_FUNCTIONS)
+  add_definitions(-DSDL_GPU_DISABLE_GLES_1)
+  add_definitions(-DSDL_GPU_DISABLE_GLES_3)
+  find_library(ANDROID_LOG_LIBRARY log)
 elseif(WIN32)
   message(" Using Windows defaults.")
   set(DEFAULT_INSTALL_LIBRARY OFF)
@@ -274,7 +279,7 @@ if (DISABLE_GLES)
 else (DISABLE_GLES)
 
 	if(ANDROID)
-	
+
 		if (NOT DISABLE_GLES_1)
 			find_library( ANDROID_GLES1_LIBRARY GLESv1_CM )
 			link_libraries(
@@ -306,7 +311,7 @@ else (DISABLE_GLES)
 	if (DISABLE_GLES_3)
 		add_definitions("-DSDL_GPU_DISABLE_GLES_3")
 	endif (DISABLE_GLES_3)
-    
+
     include_directories(src/externals/gl3stub)
     if (DYNAMIC_GLES_3)
         SET(SDL_gpu_HDRS ${SDL_gpu_HDRS} externals/gl3stub/gl3stub.c externals/gl3stub/gl3stub.h)
@@ -338,11 +343,11 @@ endif(NOT GLEW_FOUND)
 # Set stuff up for using bundled stbi
 if(NOT STBI_FOUND OR NOT STBI_WRITE_FOUND)
   add_definitions("-DSTBI_FAILURE_USERMSG")
-  
+
 	if(NOT STBI_FOUND)
 	  include_directories(src/externals/stb_image)
 	endif(NOT STBI_FOUND)
-	
+
 	if(NOT STBI_WRITE_FOUND)
 	  include_directories(src/externals/stb_image_write)
 	endif(NOT STBI_WRITE_FOUND)
